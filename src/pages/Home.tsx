@@ -1,9 +1,9 @@
-
+import CountriesList from "../components/CountriesList"
 
 export default function Home() {
     return (
-        <div>
-            <p>Home</p>
+        <div className="">
+            <CountriesList />
         </div>
     )
 }
