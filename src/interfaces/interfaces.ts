@@ -1,11 +1,15 @@
 export interface IContext {
     countries: ICountry[];
     countriesWithOffset: ICountry[];
+    regions: IContinents;
+    selectedRegion: string | null;
     darkMode: boolean;
     loading: boolean;
     error: unknown;
     toggleDarkMode: () => void;
     loadMoreCountries: () => void;
+    getCountriesByRegion: (region: string | null) => void;
+    setSelectedRegion: (region: string | null) => void;
 }
 
 export interface ICountry {
@@ -74,6 +78,8 @@ export enum IContinent {
     Oceania = "Oceania",
     SouthAmerica = "South America",
 }
+
+export type IContinents = IContinent[];
 
 export interface ICurrency {
     name:   string;

@@ -1,22 +1,33 @@
+import { useEffect, useState } from "react";
+/* Context imports */
 import { CountriesContext } from "./CountriesContext";
 import useGetCountries from "../hooks/useGetCountries";
-import { useState } from "react";
+
+/* Interfaces import */
+import { IContinent, IContinents } from "../interfaces/interfaces";
+import API from "../config/API";
 
 export default function CountriesProvider({ children }: { children: React.ReactNode }) {
     const [darkMode, setDarkMode] = useState(false);
+    const regions : IContinents = [IContinent.Africa, IContinent.Antarctica, IContinent.Asia, IContinent.Europe, IContinent.Oceania, IContinent.NorthAmerica, IContinent.SouthAmerica];
+    const [selectedRegion, setSelectedRegion] = useState<string | null>(null)
     const { countries, loading, error, countriesWithOffset, setCountriesWithOffset, setLoading } = useGetCountries();
     const offset = 8;
 
-    const localDarkMode = JSON.parse(localStorage.getItem("darkMode") || "false");
+    const localDarkMode = JSON.parse(localStorage.getItem("darkMode") as string);
 
-    if (localDarkMode) {
-        document.body.classList.add("dark");
-    }
+    useEffect(() => {
+        if (localDarkMode) {
+            document.body.classList.add("dark");
+            setDarkMode(true);
+        }
+    }, [localDarkMode])
+
 
     /* FUNCTIONS */
     const toggleDarkMode = () => {
         document.body.classList.toggle("dark");
-        localStorage.setItem("darkMode", JSON.stringify(darkMode));
+        localStorage.setItem("darkMode", JSON.stringify(!darkMode));
         setDarkMode(!darkMode);
     }
 
@@ -31,6 +42,23 @@ export default function CountriesProvider({ children }: { children: React.ReactN
         }, 1000);
     }
 
+    const getCountriesByRegion = async (region: string | null) => {
+        setLoading(true);
+        if (!region) {
+            setCountriesWithOffset([...countries]);
+            setLoading(false);
+            return;
+        }
+        try {
+            const {data} = await API.get(`region/${region}`);
+            setCountriesWithOffset(data);
+            setLoading(false);
+        } catch (error) {
+            console.log("Error fetching countries by region", error);
+            setLoading(false);
+        }
+    }
+
     return (
         <CountriesContext.Provider value={{
             /* States */
@@ -39,9 +67,13 @@ export default function CountriesProvider({ children }: { children: React.ReactN
             darkMode,
             loading,
             error,
+            regions,
+            selectedRegion,
             /* Functions */
             toggleDarkMode,
-            loadMoreCountries
+            loadMoreCountries,
+            getCountriesByRegion,
+            setSelectedRegion
         }}>
             {children}
         </CountriesContext.Provider>

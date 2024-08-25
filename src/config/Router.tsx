@@ -8,10 +8,9 @@ export default function AppRouter() {
     return (
         <Router>
         <Switch>
-            <Route path="/" component={Home}>
-            </Route>
-            <Route path="/country-details/:countryName" component={CountryDetails}></Route>
-            <Route path="*" component={FourOFour}></Route>
+            <Route path="/" component={Home} />
+            <Route path="/country-details/:countryName" component={CountryDetails} />
+            <Route path="*" component={FourOFour} />
         </Switch>
         </Router>
     )

@@ -11,7 +11,7 @@ export default function Country({ country }: { country: ICountry }) {
                     <strong className="mr-2">
                         Population: 
                     </strong>
-                    {country.population}</span>
+                    {country.population.toLocaleString()}</span>
                 <span className="block">
                     <strong className="mr-2">
                         Region: 

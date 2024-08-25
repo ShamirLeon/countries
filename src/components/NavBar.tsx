@@ -1,14 +1,20 @@
 import { useContext } from "react"
 import { CountriesContext } from "../context/CountriesContext"
 
+/* Icons */
+import SunIcon from "../assets/Sun";
+import MoonIcon from "../assets/Moon";
+
 export default function NavBar() {
 
-    const { toggleDarkMode } = useContext(CountriesContext);
+    const { toggleDarkMode, darkMode } = useContext(CountriesContext);
     return (
         <header className="fixed left-0 top-0 w-full shadow-md bg-pureWhite dark:bg-darkBlue z-[999] dark:text-pureWhite">
-            <nav className="flex justify-between py-6 px-4">
+            <nav className="flex items-center justify-between py-4 px-4">
                 <h2 className="font-bold">Where in the world?</h2>
-                <button role="button" onClick={()=> toggleDarkMode()}>Dark Mode</button>
+                <button role="button" onClick={()=> toggleDarkMode()} className="px-3 py-2">
+                    {darkMode ? <SunIcon /> : <MoonIcon />}
+                </button>
             </nav>
         </header>
     )

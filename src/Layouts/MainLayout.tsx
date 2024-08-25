@@ -3,6 +3,7 @@ import { useLocation, Link } from "wouter";
 import Dropdown from "../components/Dropdown";
 import Input from "../components/Input";
 import NavBar from "../components/NavBar";
+import ArrowLeftIcon from "../assets/ArrowLeft";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
     const routeLocation = useLocation()[0];
@@ -17,7 +18,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                         <Dropdown />
                     </>
                 ) : (
-                    <Link href="/" className="shadow-xl py-2 px-6 dark:text-white dark:bg-darkBlue">
+                    <Link href="/" className="flex gap-2 items-center shadow-xl py-3 px-6 dark:text-white dark:bg-darkBlue rounded-md max-w-32">
+                        <ArrowLeftIcon />
                         Back
                     </Link>
                 )
