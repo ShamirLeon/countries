@@ -5,15 +5,18 @@ import { CountriesContext } from "../context/CountriesContext"
 import Country from "./Country";
 
 export default function CountriesList() {
-    const { countries, loading } = useContext(CountriesContext);
+    const { loading, loadMoreCountries, countriesWithOffset } = useContext(CountriesContext);
     return (
         <>
-            {loading && (<p>Loading...</p>)}
             <div className="grid place-content-center gap-12">
-                {countries.map((country) => (
+                {countriesWithOffset.map((country) => (
                     <Country country={country} key={country.name.official}></Country>
                 ))}
+                <button onClick={() => loadMoreCountries()} className="shadow-md py-2 px-4 rounded-md m-auto">
+                    Load More
+                </button>
             </div>
+            {loading && (<p>Loading...</p>)}
         </>
     )
 }

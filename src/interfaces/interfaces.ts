@@ -1,9 +1,11 @@
 export interface IContext {
     countries: ICountry[];
+    countriesWithOffset: ICountry[];
     darkMode: boolean;
     loading: boolean;
     error: unknown;
     toggleDarkMode: () => void;
+    loadMoreCountries: () => void;
 }
 
 export interface ICountry {
