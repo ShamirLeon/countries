@@ -1,8 +1,9 @@
 import { ICountry } from "../interfaces/interfaces"
+import { Link } from "wouter"
 
 export default function Country({ country }: { country: ICountry }) {
     return (
-        <div className="rounded-md shadow-md overflow-hidden dark:bg-darkBlue dark:text-pureWhite">
+        <Link href={`/country-details/${country.name.common}`} className="rounded-md shadow-md overflow-hidden dark:bg-darkBlue dark:text-pureWhite">
             <img src={country.flags.png} alt={country.flags.alt || `${country.name.common} Flag`} className="w-full" />
             <div className="p-6">
                 <span className="block font-bold text-xl mb-4">{country.name.common}</span>
@@ -23,6 +24,6 @@ export default function Country({ country }: { country: ICountry }) {
                     {country.capital}</span>
             </div>
 
-        </div>
+        </Link>
     )
 }
