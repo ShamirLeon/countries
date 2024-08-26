@@ -1,6 +1,6 @@
 import { Link, useParams } from 'wouter';
 /* Custom hooks imports */
-import useGetCountryByName from '../hooks/useGetCountryByName';
+import useGetCountryByCapital from '../hooks/useGetCountryByCapital';
 import useBorders from '../hooks/useBorders';
 
 /* Components imports */
@@ -8,8 +8,8 @@ import FourOFour from '../components/404';
 
 export default function CountryDetails() {
 
-    const { countryName }: { countryName: string } = useParams()
-    const { country, loading, error } = useGetCountryByName(countryName)
+    const { capital }: { capital: string } = useParams()
+    const { country, loading, error } = useGetCountryByCapital(capital)
     const { bordersCountries } = useBorders(country?.borders || [])
 
     const NativeName = country?.name?.nativeName?.[country?.cca3.toLowerCase()]?.official || country?.name?.official
@@ -24,7 +24,7 @@ export default function CountryDetails() {
                 ) : (
                     <div className='mt-14'>
                         <picture>
-                            <img src={country?.flags.png} alt={country?.flags.alt || countryName} className='mb-6' />
+                            <img src={country?.flags.png} alt={country?.flags.alt || NativeName} className='mb-6' />
                         </picture>
                         <div className='dark:text-white mb-6'>
                             <h1 className='font-bold text-2xl mb-6'>{country?.name.common}</h1>
