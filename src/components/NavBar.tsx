@@ -13,7 +13,7 @@ export default function NavBar() {
             <nav className="flex items-center justify-between py-4 px-4">
                 <h2 className="font-bold">Where in the world?</h2>
                 <button role="button" onClick={()=> toggleDarkMode()} className="px-3 py-2">
-                    {darkMode ? <SunIcon /> : <MoonIcon />}
+                    {darkMode ? <SunIcon fill="#FFD700" /> : <MoonIcon fill="#B0C4DE" />}
                 </button>
             </nav>
         </header>
