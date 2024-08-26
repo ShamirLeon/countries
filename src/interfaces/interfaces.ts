@@ -10,6 +10,8 @@ export interface IContext {
     loadMoreCountries: () => void;
     getCountriesByRegion: (region: string | null) => void;
     setSelectedRegion: (region: string | null) => void;
+    getCountriesByName: (name: string) => void;
+    clearCountries: () => void;
 }
 
 export interface ICountry {
@@ -71,7 +73,7 @@ export interface ICoatOfArms {
 
 export enum IContinent {
     Africa = "Africa",
-    Antarctica = "Antarctica",
+    Antarctic = "Antarctic",
     Asia = "Asia",
     Europe = "Europe",
     NorthAmerica = "North America",

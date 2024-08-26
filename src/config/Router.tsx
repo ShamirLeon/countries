@@ -9,7 +9,7 @@ export default function AppRouter() {
         <Router>
         <Switch>
             <Route path="/" component={Home} />
-            <Route path="/country-details/:countryName" component={CountryDetails} />
+            <Route path="/country-details/:capital" component={CountryDetails} />
             <Route path="*" component={FourOFour} />
         </Switch>
         </Router>

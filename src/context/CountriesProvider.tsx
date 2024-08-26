@@ -9,7 +9,7 @@ import API from "../config/API";
 
 export default function CountriesProvider({ children }: { children: React.ReactNode }) {
     const [darkMode, setDarkMode] = useState(false);
-    const regions : IContinents = [IContinent.Africa, IContinent.Antarctica, IContinent.Asia, IContinent.Europe, IContinent.Oceania, IContinent.NorthAmerica, IContinent.SouthAmerica];
+    const regions: IContinents = [IContinent.Africa, IContinent.Antarctic, IContinent.Asia, IContinent.Europe, IContinent.Oceania, IContinent.NorthAmerica, IContinent.SouthAmerica];
     const [selectedRegion, setSelectedRegion] = useState<string | null>(null)
     const { countries, loading, error, countriesWithOffset, setCountriesWithOffset, setLoading } = useGetCountries();
     const offset = 8;
@@ -50,7 +50,7 @@ export default function CountriesProvider({ children }: { children: React.ReactN
             return;
         }
         try {
-            const {data} = await API.get(`region/${region}`);
+            const { data } = await API.get(`region/${region}`);
             setCountriesWithOffset(data);
             setLoading(false);
         } catch (error) {
@@ -58,6 +58,22 @@ export default function CountriesProvider({ children }: { children: React.ReactN
             setLoading(false);
         }
     }
+
+    const getCountriesByName = async (name: string) => {
+        if (name.length) {
+            setLoading(true)
+            try {
+                const { data } = await API.get(`/name/${name}`)
+                setCountriesWithOffset(data)
+            } catch (error) {
+                console.log("Error fetching countries by name", error);
+                setLoading(false); 
+            }
+            setLoading(false)
+        }
+    }
+
+    const clearCountries = () =>  setCountriesWithOffset([...countries])
 
     return (
         <CountriesContext.Provider value={{
@@ -73,7 +89,9 @@ export default function CountriesProvider({ children }: { children: React.ReactN
             toggleDarkMode,
             loadMoreCountries,
             getCountriesByRegion,
-            setSelectedRegion
+            setSelectedRegion,
+            getCountriesByName,
+            clearCountries
         }}>
             {children}
         </CountriesContext.Provider>
