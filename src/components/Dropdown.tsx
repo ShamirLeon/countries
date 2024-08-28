@@ -23,7 +23,7 @@ export default function Dropdown() {
                         {regions.map((region, index) => (
                             <div
                                 key={index}
-                                className="h-full py-2 px-6 hover:bg-gray-200 dark:hover:bg-darkGray cursor-pointer"
+                                className={`relative h-full py-2 px-6 hover:bg-gray-200 dark:hover:bg-slate-600 cursor-pointer after:hover:content-["Select_option"] after:absolute after:right-0 after:mr-6 ${selectedRegion === region ? "bg-gray-200 dark:bg-slate-600 after:content-['Selected_option'] after:hover:content-['Deselect_option']" : ""}`}
                                 onClick={() => {
                                     if (selectedRegion === region) {
                                         setSelectedRegion(null)

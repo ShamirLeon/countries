@@ -76,9 +76,8 @@ export enum IContinent {
     Antarctic = "Antarctic",
     Asia = "Asia",
     Europe = "Europe",
-    NorthAmerica = "North America",
     Oceania = "Oceania",
-    SouthAmerica = "South America",
+    Americas = "Americas"
 }
 
 export type IContinents = IContinent[];

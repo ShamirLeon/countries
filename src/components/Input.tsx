@@ -26,7 +26,7 @@ export default function Input() {
     return (
         <div className="flex items-center gap-4 py-4 px-6 rounded-md shadow-md mb-8 dark:bg-darkBlue">
             <SearchIcon stroke={darkMode ? "#FFFFFF" : "#858585"} />
-            <input type="text" placeholder="Search for a country..." value={name} className="outline-none border-none bg-inherit dark:text-pureWhite" onChange={(event) => setName(event.target.value.trim())} />
+            <input type="text" placeholder="Search for a country..." value={name} className="w-full outline-none border-none bg-inherit dark:text-pureWhite" onChange={(event) => setName(event.target.value.trim())} />
             {
                 name && (<button onClick={() => clearData()}> <CloseIcon stroke={darkMode ? "#FFF" : "#858585"} /> </button>)
             }

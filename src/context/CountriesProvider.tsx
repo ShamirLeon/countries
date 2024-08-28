@@ -9,9 +9,10 @@ import API from "../config/API";
 
 export default function CountriesProvider({ children }: { children: React.ReactNode }) {
     const [darkMode, setDarkMode] = useState(false);
-    const regions: IContinents = [IContinent.Africa, IContinent.Antarctic, IContinent.Asia, IContinent.Europe, IContinent.Oceania, IContinent.NorthAmerica, IContinent.SouthAmerica];
     const [selectedRegion, setSelectedRegion] = useState<string | null>(null)
-    const { countries, loading, error, countriesWithOffset, setCountriesWithOffset, setLoading } = useGetCountries();
+    const [isSearching, setIsSearching] = useState<boolean>(false)
+    const regions: IContinents = [IContinent.Africa, IContinent.Antarctic, IContinent.Asia, IContinent.Europe, IContinent.Oceania, IContinent.Americas];
+    const { countries, setCountries, loading, error, countriesWithOffset, setCountriesWithOffset, setLoading, reFetchData } = useGetCountries();
     const offset = 8;
 
     const localDarkMode = JSON.parse(localStorage.getItem("darkMode") as string);
@@ -45,23 +46,34 @@ export default function CountriesProvider({ children }: { children: React.ReactN
     const getCountriesByRegion = async (region: string | null) => {
         setLoading(true);
         if (!region) {
-            setCountriesWithOffset([...countries]);
+            reFetchData()
             setLoading(false);
             return;
         }
-        try {
-            const { data } = await API.get(`region/${region}`);
-            setCountriesWithOffset(data);
-            setLoading(false);
-        } catch (error) {
-            console.log("Error fetching countries by region", error);
-            setLoading(false);
+        if (isSearching) {
+            const filteredCountries = countriesWithOffset.filter((country) => country.region == region )
+            setCountriesWithOffset(filteredCountries)
+            setCountries(filteredCountries)
+            setLoading(false)
+        } else {
+            try {
+                const { data } = await API.get(`region/${region}`);
+                const countriesWithOffset = data.slice(0, offset);
+                setCountriesWithOffset(countriesWithOffset);
+                setCountries(data)
+                setLoading(false);
+            } catch (error) {
+                console.log("Error fetching countries by region", error);
+                setLoading(false);
+            }
         }
     }
 
     const getCountriesByName = async (name: string) => {
+        setIsSearching(true)
         if (name.length) {
             setLoading(true)
+            setSelectedRegion(null)
             try {
                 const { data } = await API.get(`/name/${name}`)
                 setCountriesWithOffset(data)
@@ -73,7 +85,12 @@ export default function CountriesProvider({ children }: { children: React.ReactN
         }
     }
 
-    const clearCountries = () =>  setCountriesWithOffset([...countries])
+    const clearCountries = () =>   {
+        setCountriesWithOffset([...countries])
+        setIsSearching(false)
+        setSelectedRegion(null)
+        reFetchData()
+    }
 
     return (
         <CountriesContext.Provider value={{

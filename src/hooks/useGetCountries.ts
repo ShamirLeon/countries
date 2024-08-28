@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ICountry } from "../interfaces/interfaces";
 import API from "../config/API";
 
@@ -9,34 +9,27 @@ function useGetCountries() {
     const [error, setError] = useState<Error | null>(null);
     const offset = 8;
 
-    useEffect(() => {
-        const fecthData = async () => {
-            try {
-                const { data }: { data: ICountry[] } = await API.get("/all");
-                if (data.length > 0) {
-                    const countriesWithOffset = data.slice(0, offset);
-                    setCountriesWithOffset(countriesWithOffset);
-                    setCountries(data);
-                }
-                setLoading(false);
-            } catch (error) {
-                setError(error as Error);
-            } finally {
-                setLoading(false);
+    const fecthData = useCallback(async () => {
+        try {
+            const { data }: { data: ICountry[] } = await API.get("/all");
+            if (data.length > 0) {
+                const countriesWithOffset = data.slice(0, offset);
+                setCountriesWithOffset(countriesWithOffset);
+                setCountries(data);
             }
-        };
-
-        fecthData();
-
-        return () => {
-            setCountries([]);
-            setCountriesWithOffset([]);
-            setLoading(true);
-            setError(null);
-        };
+            setLoading(false);
+        } catch (error) {
+            setError(error as Error);
+        } finally {
+            setLoading(false);
+        }
     }, []);
 
-    return { countries, loading, error, setCountries, countriesWithOffset, setCountriesWithOffset, setLoading };
+    useEffect(() => {        
+        fecthData();
+    }, [fecthData]);
+
+    return { countries, loading, error, setCountries, countriesWithOffset, setCountriesWithOffset, setLoading, reFetchData: fecthData };
 }
 
 export default useGetCountries;
