@@ -14,6 +14,10 @@ export default function Input() {
     }
 
     useEffect(() => {
+        setName('')
+    }, [])
+
+    useEffect(() => {
         const getData = setTimeout(async () => {
             if (name.length) {
                 getCountriesByName(name)
@@ -30,7 +34,7 @@ export default function Input() {
             {
                 name && (<button onClick={() => clearData()}> <CloseIcon stroke={darkMode ? "#FFF" : "#858585"} /> </button>)
             }
-            
+
         </div>
     )
 }

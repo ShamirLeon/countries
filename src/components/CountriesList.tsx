@@ -3,10 +3,11 @@ import { CountriesContext } from "../context/CountriesContext"
 
 /* Components Imports */
 import Country from "./Country";
+import NoSearch from "../assets/NoSearch";
 
 export default function CountriesList() {
-    const { loading, loadMoreCountries, countries, countriesWithOffset } = useContext(CountriesContext);
-    const checkLoadMore = () => countriesWithOffset.length == countries.length
+    const { loading, error, loadMoreCountries, countries, countriesWithOffset } = useContext(CountriesContext);
+    const checkLoadMore = () => countriesWithOffset.length == countries.length || !countriesWithOffset.length
     return (
         <>
             <div className="grid place-content-center gap-12">
@@ -22,6 +23,13 @@ export default function CountriesList() {
                 }
             </div>
             {loading && (<p>Loading...</p>)}
+            {error && (
+                <>
+                    <NoSearch></NoSearch>
+                    <p>No founded countries</p>
+                </>
+            )
+            }
         </>
     )
 }

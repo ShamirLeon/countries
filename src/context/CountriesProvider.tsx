@@ -12,7 +12,7 @@ export default function CountriesProvider({ children }: { children: React.ReactN
     const [selectedRegion, setSelectedRegion] = useState<string | null>(null)
     const [isSearching, setIsSearching] = useState<boolean>(false)
     const regions: IContinents = [IContinent.Africa, IContinent.Antarctic, IContinent.Asia, IContinent.Europe, IContinent.Oceania, IContinent.Americas];
-    const { countries, setCountries, loading, error, countriesWithOffset, setCountriesWithOffset, setLoading, reFetchData } = useGetCountries();
+    const { countries, setCountries, loading, error, setError, countriesWithOffset, setCountriesWithOffset, setLoading, reFetchData } = useGetCountries();
     const offset = 8;
 
     const localDarkMode = JSON.parse(localStorage.getItem("darkMode") as string);
@@ -22,6 +22,7 @@ export default function CountriesProvider({ children }: { children: React.ReactN
             document.body.classList.add("dark");
             setDarkMode(true);
         }
+        setSelectedRegion(null)
     }, [localDarkMode])
 
 
@@ -34,6 +35,7 @@ export default function CountriesProvider({ children }: { children: React.ReactN
 
     const loadMoreCountries = () => {
         setLoading(true);
+        setError(false)
         setTimeout(() => {
             const currentLength = countriesWithOffset.length;
             const nextOffset = currentLength + offset;
@@ -45,15 +47,21 @@ export default function CountriesProvider({ children }: { children: React.ReactN
 
     const getCountriesByRegion = async (region: string | null) => {
         setLoading(true);
+        setError(false)
         if (!region) {
             reFetchData()
             setLoading(false);
             return;
         }
         if (isSearching) {
-            const filteredCountries = countriesWithOffset.filter((country) => country.region == region )
-            setCountriesWithOffset(filteredCountries)
-            setCountries(filteredCountries)
+            const filteredCountries = countriesWithOffset.filter((country) => country.region == region)
+            if (filteredCountries.length) {
+                setCountriesWithOffset(filteredCountries)
+                setCountries(filteredCountries)
+            } else {
+                setError(true)
+                setCountriesWithOffset([])
+            }
             setLoading(false)
         } else {
             try {
@@ -71,7 +79,22 @@ export default function CountriesProvider({ children }: { children: React.ReactN
 
     const getCountriesByName = async (name: string) => {
         setIsSearching(true)
+        setError(false)
         if (name.length) {
+            if (selectedRegion) {
+                const regExp = new RegExp(`${name}`, 'i')
+                const filteredCountries = countries.filter((country) => {
+                    return regExp.test(country.name.common)
+                })
+                if (filteredCountries.length) {
+                    setError(false)
+                    setCountriesWithOffset(filteredCountries)
+                } else {
+                    setCountriesWithOffset([])
+                    setError(true)
+                }
+                return
+            }
             setLoading(true)
             setSelectedRegion(null)
             try {
@@ -79,17 +102,22 @@ export default function CountriesProvider({ children }: { children: React.ReactN
                 setCountriesWithOffset(data)
             } catch (error) {
                 console.log("Error fetching countries by name", error);
-                setLoading(false); 
+                setCountriesWithOffset([])
+                setError(error as Error)
+                setLoading(false);
             }
             setLoading(false)
         }
     }
 
-    const clearCountries = () =>   {
+    const clearCountries = () => {
         setCountriesWithOffset([...countries])
         setIsSearching(false)
-        setSelectedRegion(null)
-        reFetchData()
+        setError(null)
+        if (!selectedRegion) {
+            setSelectedRegion(null)
+            reFetchData()
+        }
     }
 
     return (

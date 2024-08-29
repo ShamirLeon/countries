@@ -5,7 +5,7 @@ export interface IContext {
     selectedRegion: string | null;
     darkMode: boolean;
     loading: boolean;
-    error: unknown;
+    error: Error | boolean | null;
     toggleDarkMode: () => void;
     loadMoreCountries: () => void;
     getCountriesByRegion: (region: string | null) => void;

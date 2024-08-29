@@ -6,7 +6,7 @@ function useGetCountries() {
     const [countries, setCountries] = useState<ICountry[]>([]);
     const [countriesWithOffset, setCountriesWithOffset] = useState<ICountry[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<Error | null>(null);
+    const [error, setError] = useState<Error | boolean | null>(null);
     const offset = 8;
 
     const fecthData = useCallback(async () => {
@@ -25,11 +25,11 @@ function useGetCountries() {
         }
     }, []);
 
-    useEffect(() => {        
+    useEffect(() => {
         fecthData();
     }, [fecthData]);
 
-    return { countries, loading, error, setCountries, countriesWithOffset, setCountriesWithOffset, setLoading, reFetchData: fecthData };
+    return { countries, loading, error, setCountries, countriesWithOffset, setCountriesWithOffset, setLoading, reFetchData: fecthData, setError };
 }
 
 export default useGetCountries;
