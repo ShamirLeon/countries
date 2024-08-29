@@ -18,7 +18,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                         <Dropdown />
                     </div>
                 ) : (
-                    <Link href="/" className="flex gap-2 items-center shadow-xl py-3 px-6 dark:text-white dark:bg-darkBlue rounded-md max-w-32">
+                    <Link href="/" className="flex gap-2 items-center shadow-xl py-3 px-6 mt-12 dark:text-white dark:bg-darkBlue rounded-md max-w-32 lg:my-14">
                         <ArrowLeftIcon />
                         Back
                     </Link>
