@@ -7,7 +7,7 @@ import MainLayout from "./Layouts/MainLayout"
 function App() {
   return (
     <>
-      <div>
+      <div className="bg-lightGray dark:bg-veryDarkBlue h-[100%]">
         <CountriesProvider>
           <MainLayout>
             <AppRouter />

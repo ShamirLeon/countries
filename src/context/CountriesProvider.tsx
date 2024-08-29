@@ -19,7 +19,7 @@ export default function CountriesProvider({ children }: { children: React.ReactN
 
     useEffect(() => {
         if (localDarkMode) {
-            document.body.classList.add("dark");
+            document.documentElement.classList.add('dark')
             setDarkMode(true);
         }
         setSelectedRegion(null)
@@ -28,7 +28,7 @@ export default function CountriesProvider({ children }: { children: React.ReactN
 
     /* FUNCTIONS */
     const toggleDarkMode = () => {
-        document.body.classList.toggle("dark");
+        document.documentElement.classList.toggle('dark')
         localStorage.setItem("darkMode", JSON.stringify(!darkMode));
         setDarkMode(!darkMode);
     }

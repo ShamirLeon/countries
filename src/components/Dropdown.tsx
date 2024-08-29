@@ -7,9 +7,9 @@ export default function Dropdown() {
     const [isOpen, setIsOpen] = useState(false)
     const toggleDropdown = () => setIsOpen(!isOpen)
     return (
-        <div className="relative mb-8">
+        <div className="relative md:w-[350px]">
             <div
-                className="flex items-center justify-between text-black py-4 px-6 rounded-md shadow-md  dark:text-pureWhite dark:bg-darkBlue cursor-pointer"
+                className="flex items-center justify-between gap-3 text-black py-4 px-6 rounded-md shadow-md  dark:text-pureWhite dark:bg-darkBlue cursor-pointer"
                 onClick={() => toggleDropdown()}
             >
                 <span>{selectedRegion || "Filter By Region"}</span>
